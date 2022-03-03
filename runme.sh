@@ -1,0 +1,22 @@
+sudo ./bin/nodeos --data-dir=./eos.data \
+    --agent-name=nodeos \
+    --producer-name=eosio \
+    --disable-replay-opts \
+    --plugin=eosio::chain_plugin \
+    --plugin=eosio::chain_api_plugin \
+    --plugin=eosio::producer_api_plugin \
+    --plugin=eosio::producer_plugin \
+    --plugin=eosio::chain_api_plugin \
+    --plugin=eosio::net_api_plugin \
+    --plugin=eosio::http_plugin \
+    --plugin=eosio::state_history_plugin \
+    --http-server-address=0.0.0.0:9998 \
+    --http-validate-host=false \
+    --max-transaction-time=30000 \
+    --abi-serializer-max-time-ms=15000 \
+    --wasm-runtime=eos-vm-jit \
+    --eos-vm-oc-enable \
+    --enable-stale-production \
+    --access-control-allow-origin=\* \
+    --contracts-console \
+    --verbose-http-errors 
