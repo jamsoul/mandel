@@ -23,4 +23,4 @@
 	url = https://github.com/eosnetworkfoundation/mandel-wasm-spec-tests
 [submodule "libraries/fc"]
 	path = libraries/fc
-	url = https://github.com/jamsoul/mandel-fc.git
+	url = git@github.com:jamsoul/mandel-fc.git
