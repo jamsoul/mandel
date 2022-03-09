@@ -100,4 +100,21 @@ namespace eosio { namespace chain { namespace webassembly {
    void interface::ripemd160(legacy_span<const char> data, legacy_ptr<fc::ripemd160> hash_val) const {
       *hash_val = context.trx_context.hash_with_checktime<fc::ripemd160>( data.data(), data.size() );
    }
+
+   void interface::alt_bn128_add(legacy_span<const char> data, legacy_ptr<fc::sha256> hash_val) const {
+      *hash_val = context.trx_context.hash_with_checktime<fc::sha256>( data.data(), data.size() );
+   }
+
+   void interface::alt_bn128_mul(legacy_span<const char> data, legacy_ptr<fc::sha256> hash_val) const {
+      *hash_val = context.trx_context.hash_with_checktime<fc::sha256>( data.data(), data.size() );
+   }
+
+   void interface::alt_bn128_pair(legacy_span<const char> data, legacy_ptr<fc::sha256> hash_val) const {
+      *hash_val = context.trx_context.hash_with_checktime<fc::sha256>( data.data(), data.size() );
+   }
+
+   void interface::mod_exp(legacy_span<const char> data, legacy_ptr<fc::sha256> hash_val) const {
+      *hash_val = context.trx_context.hash_with_checktime<fc::sha256>( data.data(), data.size() );
+   }
+
 }}} // ns eosio::chain::webassembly

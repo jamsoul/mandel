@@ -1690,6 +1690,44 @@ namespace webassembly {
          */
          int32_t get_action(uint32_t type, uint32_t index, legacy_span<char> buffer) const;
 
+         /**
+          * Precompiled contracts for addition on the elliptic curve alt_bn128 
+          *
+          * @ingroup crypto
+          * @param data - a span containing the data.
+          * @param[out] hash_val - the resulting digest.
+         */
+         void alt_bn128_add(legacy_span<const char> data, legacy_ptr<fc::sha256> hash_val) const;
+
+         /**
+          * Precompiled contracts for scalar multiplication on the elliptic curve alt_bn128 
+          *
+          * @ingroup crypto
+          * @param data - a span containing the data.
+          * @param[out] hash_val - the resulting digest.
+         */
+         void alt_bn128_mul(legacy_span<const char> data, legacy_ptr<fc::sha256> hash_val) const;
+
+         /**
+          * Precompiled contracts for optimal ate pairing check on the elliptic curve alt_bn128 
+          *
+          * @ingroup crypto
+          * @param data - a span containing the data.
+          * @param[out] hash_val - the resulting digest.
+         */
+         void alt_bn128_pair(legacy_span<const char> data, legacy_ptr<fc::sha256> hash_val) const;
+
+         /**
+          * Big integer modular exponentiation
+          *
+          * @ingroup crypto
+          * @param data - a span containing the data.
+          * @param[out] hash_val - the resulting digest.
+         */
+         void mod_exp(legacy_span<const char> data, legacy_ptr<fc::sha256> hash_val) const;
+
+
+
          // compiler builtins api
          void __ashlti3(legacy_ptr<int128_t>, uint64_t, uint64_t, uint32_t) const;
          void __ashrti3(legacy_ptr<int128_t>, uint64_t, uint64_t, uint32_t) const;
