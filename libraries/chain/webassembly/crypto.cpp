@@ -3,6 +3,7 @@
 #include <eosio/chain/transaction_context.hpp>
 #include <eosio/chain/apply_context.hpp>
 
+
 namespace eosio { namespace chain { namespace webassembly {
 
    void interface::assert_recover_key( legacy_ptr<const fc::sha256> digest,
