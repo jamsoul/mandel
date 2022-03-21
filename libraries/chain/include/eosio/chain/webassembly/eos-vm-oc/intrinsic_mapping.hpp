@@ -260,7 +260,10 @@ inline constexpr auto get_intrinsic_table() {
       "env.get_parameters_packed",
       "env.set_parameters_packed",
       "env.get_code_hash",
-      "env.evm_precompiles"
+      "env.alt_bn128_add",
+      "env.alt_bn128_mul",
+      "env.alt_bn128_pair",
+      "env.mod_exp"
    );
 }
 inline constexpr std::size_t find_intrinsic_index(std::string_view hf) {

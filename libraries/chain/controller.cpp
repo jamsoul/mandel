@@ -3538,7 +3538,10 @@ void controller_impl::on_activation<builtin_protocol_feature_t::get_code_hash>()
 template<>
 void controller_impl::on_activation<builtin_protocol_feature_t::evm_precompiles>() {
    db.modify( db.get<protocol_state_object>(), [&]( auto& ps ) {
-      add_intrinsic_to_whitelist( ps.whitelisted_intrinsics, "evm_precompiles" );
+      add_intrinsic_to_whitelist( ps.whitelisted_intrinsics, "alt_bn128_add" );
+      add_intrinsic_to_whitelist( ps.whitelisted_intrinsics, "alt_bn128_mul" );
+      add_intrinsic_to_whitelist( ps.whitelisted_intrinsics, "alt_bn128_pair" );
+      add_intrinsic_to_whitelist( ps.whitelisted_intrinsics, "mod_exp" );            
    } );
 }
 
