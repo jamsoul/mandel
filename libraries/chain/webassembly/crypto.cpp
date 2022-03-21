@@ -102,20 +102,78 @@ namespace eosio { namespace chain { namespace webassembly {
       *hash_val = context.trx_context.hash_with_checktime<fc::ripemd160>( data.data(), data.size() );
    }
 
-   void interface::alt_bn128_add(legacy_span<const char> data, legacy_ptr<fc::sha256> hash_val) const {
-      *hash_val = context.trx_context.hash_with_checktime<fc::sha256>( data.data(), data.size() );
+   void interface::alt_bn128_add(span<char> op1, span<char> op2, span<char> result) const {
    }
 
-   void interface::alt_bn128_mul(legacy_span<const char> data, legacy_ptr<fc::sha256> hash_val) const {
-      *hash_val = context.trx_context.hash_with_checktime<fc::sha256>( data.data(), data.size() );
+   void interface::alt_bn128_mul(span<char> g1_point, span<char> scalar, span<char> result) const {
    }
 
-   void interface::alt_bn128_pair(legacy_span<const char> data, legacy_ptr<fc::sha256> hash_val) const {
-      *hash_val = context.trx_context.hash_with_checktime<fc::sha256>( data.data(), data.size() );
+   void interface::alt_bn128_pair(span<char> g1_pairs, span<char> g2_pairs, bool result) const {
    }
 
-   void interface::mod_exp(legacy_span<const char> data, legacy_ptr<fc::sha256> hash_val) const {
-      *hash_val = context.trx_context.hash_with_checktime<fc::sha256>( data.data(), data.size() );
+   void interface::mod_exp(uint32_t len_base, 
+                           uint32_t len_exp, 
+                           uint32_t len_modulus,
+                           span<char> base, 
+                           span<char> exp, 
+                           span<char> modulus, 
+                           span<char> out) const {
+
    }
 
 }}} // ns eosio::chain::webassembly
+
+/*
+
+   int32_t interface::recover_key_safe( span<const char> digest,
+                                        span<const char> sig,
+                                        span<char> pub,
+                                        uint32_t* publen) const {
+      using error_code = eosio::chain::webassembly::error_codes::recover_key_safe;
+
+      try {
+         fc::crypto::signature s;
+         try {
+            datastream<const char*> ds( sig.data(), sig.size() );
+            fc::raw::unpack(ds, s);
+         } catch ( fc::exception& ) {
+            return error_code::invalid_signature_format;
+         }
+
+         if( static_cast<unsigned>(s.which()) >= context.db.get<protocol_state_object>().num_supported_key_types ) {
+            return error_code::unactivated_key_type;
+         }
+
+         if(context.control.is_producing_block())
+            EOS_ASSERT(s.variable_size() <= context.control.configured_subjective_signature_length_limit(),
+                       sig_variable_size_limit_exception, "signature variable length component size greater than subjective maximum");
+
+         fc::sha256 _digest;
+         try {
+           _digest = fc::sha256(digest.data(), digest.size());
+         } catch ( fc::exception& ) {
+            return error_code::invalid_message_digest;
+         }
+
+         fc::crypto::public_key recovered;
+         try {
+            recovered = fc::crypto::public_key(s, _digest, false);
+         } catch ( fc::exception& ) {
+            return error_code::invalid_signature_data;
+         }
+
+         auto packed_pubkey = fc::raw::pack(recovered);
+         if( pub.size() < packed_pubkey.size() ) {
+            return error_code::insufficient_output_buffer;
+         }
+         std::memcpy(pub.data(), packed_pubkey.data(), packed_pubkey.size());
+         *publen = packed_pubkey.size();
+      } catch( const eosio::chain::sig_variable_size_limit_exception& ) {
+         throw;
+      } catch ( fc::exception& ) {
+         return error_code::undefined;
+      }
+      return error_code::none;
+   }
+
+*/
