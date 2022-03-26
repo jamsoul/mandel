@@ -103,6 +103,13 @@ namespace eosio { namespace chain { namespace webassembly {
    }
 
    void interface::alt_bn128_add(span<char> op1, span<char> op2, span<char> result) const {
+      datastream<const char*> ds( op1.data(), op1.size() );
+     // fc::raw::unpack(ds, s);
+      fc::snark::fc_span _op1;
+      fc::snark::fc_span _op2;
+      fc::snark::fc_span _result;
+
+      int32_t retCode = fc::snark::alt_bn128_add(_op1, _op2, &_result);
    }
 
    void interface::alt_bn128_mul(span<char> g1_point, span<char> scalar, span<char> result) const {

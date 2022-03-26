@@ -3,6 +3,7 @@
 #include <eosio/chain/types.hpp>
 #include <eosio/chain/webassembly/common.hpp>
 #include <fc/crypto/sha1.hpp>
+#include <fc/crypto/snark.hpp>
 #include <boost/hana/string.hpp>
 
 namespace eosio { namespace chain {
