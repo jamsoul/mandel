@@ -102,28 +102,32 @@ namespace eosio { namespace chain { namespace webassembly {
       *hash_val = context.trx_context.hash_with_checktime<fc::ripemd160>( data.data(), data.size() );
    }
 
-   void interface::alt_bn128_add(span<char> op1, span<char> op2, span<char> result) const {
-      datastream<const char*> ds( op1.data(), op1.size() );
-     // fc::raw::unpack(ds, s);
+   void interface::alt_bn128_add(span<const char> op1, span<const char> op2, span<char> result) const {
+      datastream<const char*> ds1( op1.data(), op1.size() );
+      datastream<const char*> ds2( op2.data(), op2.size() );
+
       fc::snark::fc_span _op1;
       fc::snark::fc_span _op2;
       fc::snark::fc_span _result;
 
+      fc::raw::unpack(ds1, _op1);
+      fc::raw::unpack(ds2, _op2);
+
       int32_t retCode = fc::snark::alt_bn128_add(_op1, _op2, &_result);
    }
 
-   void interface::alt_bn128_mul(span<char> g1_point, span<char> scalar, span<char> result) const {
+   void interface::alt_bn128_mul(span<const char> g1_point, span<const char> scalar, span<char> result) const {
    }
 
-   void interface::alt_bn128_pair(span<char> g1_pairs, span<char> g2_pairs, bool result) const {
+   void interface::alt_bn128_pair(span<const char> g1_pairs, span<const char> g2_pairs, span<char> result) const {
    }
 
    void interface::mod_exp(uint32_t len_base, 
                            uint32_t len_exp, 
                            uint32_t len_modulus,
-                           span<char> base, 
-                           span<char> exp, 
-                           span<char> modulus, 
+                           span<const char> base, 
+                           span<const char> exp, 
+                           span<const char> modulus, 
                            span<char> out) const {
 
    }

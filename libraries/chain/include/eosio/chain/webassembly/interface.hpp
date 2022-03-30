@@ -1699,7 +1699,7 @@ namespace webassembly {
           * @param op2 - a span containing the second operand G1 point.* 
           * @param[out] result - the result op1 + op2.
          */
-         void alt_bn128_add(span<char> op1, span<char> op2, span<char> result) const;
+         void alt_bn128_add(span<const char> op1, span<const char> op2, span<char> result) const;
 
          /**
           * Precompiled contracts for scalar multiplication on the elliptic curve alt_bn128 
@@ -1709,7 +1709,7 @@ namespace webassembly {
           * @param scalar   - a span containing the scalar.* 
           * @param[out] result - g1 * scalar.
          */
-         void alt_bn128_mul(span<char> g1_point, span<char> scalar, span<char> result) const;
+         void alt_bn128_mul(span<const char> g1_point, span<const char> scalar, span<char> result) const;
 
          /**
           * Precompiled contracts for optimal ate pairing check on the elliptic curve alt_bn128 
@@ -1719,7 +1719,7 @@ namespace webassembly {
           * @param g2_pairs - a span containing pairs of G2 points. (2 * 64 bytes)
           * @param[out] result - true if pairing evaluates to 1, false otherwise
          */
-         void alt_bn128_pair(span<char> g1_pairs, span<char> g2_pairs, bool result) const;
+         void alt_bn128_pair(span<const char> g1_pairs, span<const char> g2_pairs, span<char> result) const;
 
          /**
           * Big integer modular exponentiation
@@ -1736,7 +1736,7 @@ namespace webassembly {
           * @param modulus     - a span containing MODULUS.
           * @param[out] out    - the result (BASE**EXPONENT) % MODULUS 
          */
-         void mod_exp(uint32_t len_base, uint32_t len_exp, uint32_t len_modulus, span<char> base, span<char> exp, span<char> modulus, span<char> out) const;
+         void mod_exp(uint32_t len_base, uint32_t len_exp, uint32_t len_modulus, span<const char> base, span<const char> exp, span<const char> modulus, span<char> out) const;
 
          // compiler builtins api
          void __ashlti3(legacy_ptr<int128_t>, uint64_t, uint64_t, uint32_t) const;

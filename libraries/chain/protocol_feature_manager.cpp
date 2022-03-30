@@ -25,7 +25,7 @@ Pre-activated protocol features must be activated in the next block.
             {},
             {time_point{}, false, true} // enabled without preactivation and ready to go at any time
          } )
-         (  builtin_protocol_feature_t::preactivate_feature, builtin_protocol_feature_spec{
+         (  builtin_protocol_feature_t::evm_precompiles, builtin_protocol_feature_spec{
             "EVM_PRECOMPILES",
             fc::variant("0d0fc7f018f1f0322f5e87967055e51a595bdeb7c2e5a11a6a543dad4c78b6a6").as<digest_type>(),
             // SHA256 hash of the raw message below within the comment delimiters (do not modify message below).
