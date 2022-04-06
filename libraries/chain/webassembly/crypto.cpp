@@ -2,7 +2,7 @@
 #include <eosio/chain/protocol_state_object.hpp>
 #include <eosio/chain/transaction_context.hpp>
 #include <eosio/chain/apply_context.hpp>
-
+#include <eosio/chain/webassembly/error_codes.hpp>
 
 namespace eosio { namespace chain { namespace webassembly {
 
@@ -102,34 +102,70 @@ namespace eosio { namespace chain { namespace webassembly {
       *hash_val = context.trx_context.hash_with_checktime<fc::ripemd160>( data.data(), data.size() );
    }
 
-   void interface::alt_bn128_add(span<const char> op1, span<const char> op2, span<char> result) const {
-      datastream<const char*> ds1( op1.data(), op1.size() );
-      datastream<const char*> ds2( op2.data(), op2.size() );
+   int32_t interface::alt_bn128_add(span<const char> op1, span<const char> op2, span<char> result ) const {
+      using error_code = eosio::chain::webassembly::error_codes::alt_bn128;
 
-      fc::snark::fc_span _op1;
-      fc::snark::fc_span _op2;
-      fc::snark::fc_span _result;
+      fc::snark::bytes _op1(op1.data(), op1.data() + op1.size());
+      fc::snark::bytes _op2(op2.data(), op2.data() + op2.size());
 
-      fc::raw::unpack(ds1, _op1);
-      fc::raw::unpack(ds2, _op2);
+      try {
+         auto retCall = fc::snark::alt_bn128_add(_op1, _op2);
+         if (retCall.first) {
+            auto & response = retCall.second;
+            if (result.size()>=response.size()) {
+               std::copy(response.begin(), response.end(), result.data());
+            } else {
+               // output buffer is smaller than expected
+            }
+         } else {
+            // something wrong safe -
+         }
 
-      int32_t retCode = fc::snark::alt_bn128_add(_op1, _op2, &_result);
+      } catch ( fc::exception& ) {
+         return error_code::undefined;
+      }
+
+      return error_code::none;
    }
 
-   void interface::alt_bn128_mul(span<const char> g1_point, span<const char> scalar, span<char> result) const {
+   int32_t interface::alt_bn128_mul(span<const char> g1_point, span<const char> scalar, span<char> result) const {
+      using error_code = eosio::chain::webassembly::error_codes::alt_bn128;
+
+      fc::snark::bytes _g1_point(g1_point.data(), g1_point.data() + g1_point.size());
+      fc::snark::bytes _scalar(scalar.data(), scalar.data() + scalar.size());
+
+      try {
+         auto retCall = fc::snark::alt_bn128_mul(_g1_point, _scalar);
+         if (retCall.first) {
+            auto & response = retCall.second;
+            if (result.size()>=response.size()) {
+               std::copy(response.begin(), response.end(), result.data());
+            } else {
+               // output buffer is smaller than expected
+            }
+         } else {
+            // something wrong safe -
+         }
+
+      } catch ( fc::exception& ) {
+         return error_code::undefined;
+      }
+
+      return error_code::none;
    }
 
-   void interface::alt_bn128_pair(span<const char> g1_pairs, span<const char> g2_pairs, span<char> result) const {
+   int32_t interface::alt_bn128_pair(span<const char> g1_pairs, span<const char> g2_pairs, span<char> result) const {
+      return error_code::none;
    }
 
-   void interface::mod_exp(uint32_t len_base, 
-                           uint32_t len_exp, 
-                           uint32_t len_modulus,
-                           span<const char> base, 
-                           span<const char> exp, 
-                           span<const char> modulus, 
-                           span<char> out) const {
-
+   int32_t interface::mod_exp(uint32_t len_base, 
+                              uint32_t len_exp, 
+                              uint32_t len_modulus,
+                              span<const char> base, 
+                              span<const char> exp, 
+                              span<const char> modulus, 
+                              span<char> out) const {
+      return error_code::none;
    }
 
 }}} // ns eosio::chain::webassembly
