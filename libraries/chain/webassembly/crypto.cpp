@@ -105,13 +105,26 @@ namespace eosio { namespace chain { namespace webassembly {
    int32_t interface::alt_bn128_add(span<const char> op1, span<const char> op2, span<char> result ) const {
       using error_code = eosio::chain::webassembly::error_codes::alt_bn128;
 
+      printf("()()()()()()()()() ()()()()() alt_bn128_add\n");
+
       fc::snark::bytes _op1(op1.data(), op1.data() + op1.size());
       fc::snark::bytes _op2(op2.data(), op2.data() + op2.size());
 
+      auto sop1 = to_hex(op1.data(), op1.size());
+      printf("op1 : %s \n", sop1.c_str());
+      auto sop2 = to_hex(op2.data(), op2.size());
+      printf("op2 : %s \n", sop2.c_str());
+
       try {
+         printf("Calling ... ");
          auto retCall = fc::snark::alt_bn128_add(_op1, _op2);
-         if (retCall.first) {
-            auto & response = retCall.second;
+         printf("Return: %s", retCall.first?"true":"false");
+
+         auto sres = to_hex(retCall.second.data(), retCall.second.size());
+         printf("result : %s \n", sres.c_str());
+
+         if (!retCall.first) {
+            auto &response = retCall.second;
             if (result.size()>=response.size()) {
                std::copy(response.begin(), response.end(), result.data());
             } else {
@@ -125,19 +138,33 @@ namespace eosio { namespace chain { namespace webassembly {
          return error_code::undefined;
       }
 
+
       return error_code::none;
    }
 
    int32_t interface::alt_bn128_mul(span<const char> g1_point, span<const char> scalar, span<char> result) const {
       using error_code = eosio::chain::webassembly::error_codes::alt_bn128;
 
+      printf("()()()()()()()()() ()()()()() alt_bn128_mul\n");
+
       fc::snark::bytes _g1_point(g1_point.data(), g1_point.data() + g1_point.size());
       fc::snark::bytes _scalar(scalar.data(), scalar.data() + scalar.size());
 
+      auto sop1 = to_hex(g1_point.data(), g1_point.size());
+      printf("g1_point : %s \n ", sop1.c_str());
+      auto sop2 = to_hex(scalar.data(), scalar.size());
+      printf("scalar : %s \n ", sop2.c_str());
+
       try {
-         auto retCall = fc::snark::alt_bn128_mul(_g1_point, _scalar);
-         if (retCall.first) {
+         printf("Calling ... ");
+         auto retCall = fc::snark::alt_bn128_mul(_g1_point, _scalar);\
+
+         auto sres = to_hex(retCall.second.data(), retCall.second.size());
+         printf("result : %s \n", sres.c_str());
+
+         if (!retCall.first) {
             auto & response = retCall.second;
+            
             if (result.size()>=response.size()) {
                std::copy(response.begin(), response.end(), result.data());
             } else {
@@ -155,6 +182,7 @@ namespace eosio { namespace chain { namespace webassembly {
    }
 
    int32_t interface::alt_bn128_pair(span<const char> g1_pairs, span<const char> g2_pairs, span<char> result) const {
+      using error_code = eosio::chain::webassembly::error_codes::alt_bn128;
       return error_code::none;
    }
 
@@ -165,6 +193,7 @@ namespace eosio { namespace chain { namespace webassembly {
                               span<const char> exp, 
                               span<const char> modulus, 
                               span<char> out) const {
+      using error_code = eosio::chain::webassembly::error_codes::alt_bn128;
       return error_code::none;
    }
 
