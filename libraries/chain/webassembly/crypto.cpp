@@ -103,7 +103,7 @@ namespace eosio { namespace chain { namespace webassembly {
    }
 
    int32_t interface::alt_bn128_add(span<const char> op1, span<const char> op2, span<char> result ) const {
-      using error_code = eosio::chain::webassembly::error_codes::alt_bn128;
+      using error_code = fc::snark::error_codes::alt_bn128;
 
       printf("()()()()()()()()() ()()()()() alt_bn128_add\n");
 
@@ -143,7 +143,7 @@ namespace eosio { namespace chain { namespace webassembly {
    }
 
    int32_t interface::alt_bn128_mul(span<const char> g1_point, span<const char> scalar, span<char> result) const {
-      using error_code = eosio::chain::webassembly::error_codes::alt_bn128;
+      using error_code = fc::snark::error_codes::alt_bn128;
 
       printf("()()()()()()()()() ()()()()() alt_bn128_mul\n");
 
@@ -181,8 +181,37 @@ namespace eosio { namespace chain { namespace webassembly {
       return error_code::none;
    }
 
-   int32_t interface::alt_bn128_pair(span<const char> g1_pairs, span<const char> g2_pairs, span<char> result) const {
-      using error_code = eosio::chain::webassembly::error_codes::alt_bn128;
+   int32_t interface::alt_bn128_pair(span<const char> g1_g2_pairs, span<char> result) const {
+      using error_code = fc::snark::error_codes::alt_bn128;
+
+      printf("()()()()()()()()() ()()()()() alt_bn128_pair\n");
+
+      size_t constexpr pairSize = 2 * 32 + 2 * 64;
+      size_t const pairs = g1_g2_pairs.size() / pairSize;
+      if (pairs * pairSize != g1_g2_pairs.size())
+         return error_code::undefined; // buffer size mismatch pairs length
+
+      fc::snark::bytes _g1_g2_pairs(g1_g2_pairs.data(), g1_g2_pairs.data() + g1_g2_pairs.size());
+
+      auto sop1 = to_hex(g1_g2_pairs.data(), g1_g2_pairs.size());
+      printf("g1_g2_pairs : %s \n ", sop1.c_str());
+
+      try {
+         printf("Calling ... ");
+         auto retCall = fc::snark::alt_bn128_pair(_g1_g2_pairs);
+
+         printf("result : %s \n", retCall.second?"True":"False");
+
+         if (!retCall.first) {
+            result.data()[0] = retCall.second ;
+         } else {
+            return error_code::undefined;
+         }
+
+      } catch ( fc::exception& ) {
+         return error_code::undefined;
+      }
+
       return error_code::none;
    }
 
@@ -193,7 +222,7 @@ namespace eosio { namespace chain { namespace webassembly {
                               span<const char> exp, 
                               span<const char> modulus, 
                               span<char> out) const {
-      using error_code = eosio::chain::webassembly::error_codes::alt_bn128;
+      using error_code = fc::snark::error_codes::alt_bn128;
       return error_code::none;
    }
 

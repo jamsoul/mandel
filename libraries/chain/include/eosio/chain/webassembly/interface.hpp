@@ -1715,11 +1715,10 @@ namespace webassembly {
           * Precompiled contracts for optimal ate pairing check on the elliptic curve alt_bn128 
           *
           * @ingroup crypto
-          * @param g1_pairs - a span containing pairs of G1 points. (2 * 32 bytes)
-          * @param g2_pairs - a span containing pairs of G2 points. (2 * 64 bytes)
+          * @param g1_g2_pairs - a span containing pairs of G1,G2 points. (2 * 32 bytes) + (2 * 64 bytes)
           * @param[out] result - true if pairing evaluates to 1, false otherwise
          */
-         int32_t alt_bn128_pair(span<const char> g1_pairs, span<const char> g2_pairs, span<char> result) const;
+         int32_t alt_bn128_pair(span<const char> g1_g2_pairs, span<char> result) const;
 
          /**
           * Big integer modular exponentiation
