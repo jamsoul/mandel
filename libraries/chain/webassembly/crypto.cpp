@@ -223,6 +223,47 @@ namespace eosio { namespace chain { namespace webassembly {
                               span<const char> modulus, 
                               span<char> out) const {
       using error_code = fc::snark::error_codes::alt_bn128;
+
+      printf("()()()()()()()()() ()()()()() mod_exp\n");
+
+      fc::snark::bytes _base(base.data(), base.data() + base.size());
+      fc::snark::bytes _exp(exp.data(), exp.data() + exp.size());
+      fc::snark::bytes _mod(modulus.data(), modulus.data() + modulus.size());
+
+      printf("len base : %d\n", len_base);
+      printf("len exp : %d\n", len_exp);      
+      printf("len modulus : %d\n", len_modulus);      
+      auto sop1 = to_hex(base.data(), base.size());
+      printf("base : %s \n", sop1.c_str());
+      auto sop2 = to_hex(exp.data(), exp.size());
+      printf("exp : %s \n", sop2.c_str());
+      auto sop3 = to_hex(modulus.data(), modulus.size());
+      printf("mod : %s \n", sop3.c_str());
+
+
+      try {
+         printf("Calling ... ");
+         auto retCall = fc::snark::modexp(len_base, len_exp, len_modulus, _base, _exp, _mod);
+         printf("Return: %s", retCall.first?"true":"false");
+
+         auto sres = to_hex(retCall.second.data(), retCall.second.size());
+         printf("result : %s \n", sres.c_str());
+
+         if (!retCall.first) {
+            auto &response = retCall.second;
+            if (out.size()>=response.size()) {
+               std::copy(response.begin(), response.end(), out.data());
+            } else {
+               // output buffer is smaller than expected
+            }
+         } else {
+            // something wrong safe -
+         }
+
+      } catch ( fc::exception& ) {
+         return error_code::undefined;
+      }
+      
       return error_code::none;
    }
 
