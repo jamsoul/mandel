@@ -1723,19 +1723,16 @@ namespace webassembly {
          /**
           * Big integer modular exponentiation
           *
-          * <length_of_BASE> <length_of_EXPONENT> <length_of_MODULUS> <BASE> <EXPONENT> <MODULUS>
+          * <BASE> <EXPONENT> <MODULUS>
           * returns an output (BASE**EXPONENT) % MODULUS as a byte array {{{{ with the same length as the modulus }}}}
           * 
           * @ingroup crypto
-          * @param len_base    - length of BASE.
-          * @param len_exp     - length of EXPONENT.
-          * @param len_modulus - length of MODULUS.
           * @param base        - a span containing BASE 
           * @param exp         - a span containing EXPONENT.
           * @param modulus     - a span containing MODULUS.
           * @param[out] out    - the result (BASE**EXPONENT) % MODULUS 
          */
-         int32_t mod_exp(uint32_t len_base, uint32_t len_exp, uint32_t len_modulus, span<const char> base, span<const char> exp, span<const char> modulus, span<char> out) const;
+         int32_t mod_exp(span<const char> base, span<const char> exp, span<const char> modulus, span<char> out) const;
 
          // compiler builtins api
          void __ashlti3(legacy_ptr<int128_t>, uint64_t, uint64_t, uint32_t) const;

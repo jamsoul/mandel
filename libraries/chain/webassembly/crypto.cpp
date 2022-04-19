@@ -105,23 +105,11 @@ namespace eosio { namespace chain { namespace webassembly {
    int32_t interface::alt_bn128_add(span<const char> op1, span<const char> op2, span<char> result ) const {
       using error_code = fc::snark::error_codes::alt_bn128;
 
-      printf("()()()()()()()()() ()()()()() alt_bn128_add\n");
-
       fc::snark::bytes _op1(op1.data(), op1.data() + op1.size());
       fc::snark::bytes _op2(op2.data(), op2.data() + op2.size());
 
-      auto sop1 = to_hex(op1.data(), op1.size());
-      printf("op1 : %s \n", sop1.c_str());
-      auto sop2 = to_hex(op2.data(), op2.size());
-      printf("op2 : %s \n", sop2.c_str());
-
       try {
-         printf("Calling ... ");
          auto retCall = fc::snark::alt_bn128_add(_op1, _op2);
-         printf("Return: %s", retCall.first?"true":"false");
-
-         auto sres = to_hex(retCall.second.data(), retCall.second.size());
-         printf("result : %s \n", sres.c_str());
 
          if (!retCall.first) {
             auto &response = retCall.second;
@@ -145,22 +133,11 @@ namespace eosio { namespace chain { namespace webassembly {
    int32_t interface::alt_bn128_mul(span<const char> g1_point, span<const char> scalar, span<char> result) const {
       using error_code = fc::snark::error_codes::alt_bn128;
 
-      printf("()()()()()()()()() ()()()()() alt_bn128_mul\n");
-
       fc::snark::bytes _g1_point(g1_point.data(), g1_point.data() + g1_point.size());
       fc::snark::bytes _scalar(scalar.data(), scalar.data() + scalar.size());
 
-      auto sop1 = to_hex(g1_point.data(), g1_point.size());
-      printf("g1_point : %s \n ", sop1.c_str());
-      auto sop2 = to_hex(scalar.data(), scalar.size());
-      printf("scalar : %s \n ", sop2.c_str());
-
       try {
-         printf("Calling ... ");
-         auto retCall = fc::snark::alt_bn128_mul(_g1_point, _scalar);\
-
-         auto sres = to_hex(retCall.second.data(), retCall.second.size());
-         printf("result : %s \n", sres.c_str());
+         auto retCall = fc::snark::alt_bn128_mul(_g1_point, _scalar);
 
          if (!retCall.first) {
             auto & response = retCall.second;
@@ -184,8 +161,6 @@ namespace eosio { namespace chain { namespace webassembly {
    int32_t interface::alt_bn128_pair(span<const char> g1_g2_pairs, span<char> result) const {
       using error_code = fc::snark::error_codes::alt_bn128;
 
-      printf("()()()()()()()()() ()()()()() alt_bn128_pair\n");
-
       size_t constexpr pairSize = 2 * 32 + 2 * 64;
       size_t const pairs = g1_g2_pairs.size() / pairSize;
       if (pairs * pairSize != g1_g2_pairs.size())
@@ -193,15 +168,8 @@ namespace eosio { namespace chain { namespace webassembly {
 
       fc::snark::bytes _g1_g2_pairs(g1_g2_pairs.data(), g1_g2_pairs.data() + g1_g2_pairs.size());
 
-      auto sop1 = to_hex(g1_g2_pairs.data(), g1_g2_pairs.size());
-      printf("g1_g2_pairs : %s \n ", sop1.c_str());
-
       try {
-         printf("Calling ... ");
          auto retCall = fc::snark::alt_bn128_pair(_g1_g2_pairs);
-
-         printf("result : %s \n", retCall.second?"True":"False");
-
          if (!retCall.first) {
             result.data()[0] = retCall.second ;
          } else {
@@ -215,39 +183,18 @@ namespace eosio { namespace chain { namespace webassembly {
       return error_code::none;
    }
 
-   int32_t interface::mod_exp(uint32_t len_base, 
-                              uint32_t len_exp, 
-                              uint32_t len_modulus,
-                              span<const char> base, 
+   int32_t interface::mod_exp(span<const char> base, 
                               span<const char> exp, 
                               span<const char> modulus, 
                               span<char> out) const {
       using error_code = fc::snark::error_codes::alt_bn128;
 
-      printf("()()()()()()()()() ()()()()() mod_exp\n");
-
       fc::snark::bytes _base(base.data(), base.data() + base.size());
       fc::snark::bytes _exp(exp.data(), exp.data() + exp.size());
       fc::snark::bytes _mod(modulus.data(), modulus.data() + modulus.size());
 
-      printf("len base : %d\n", len_base);
-      printf("len exp : %d\n", len_exp);      
-      printf("len modulus : %d\n", len_modulus);      
-      auto sop1 = to_hex(base.data(), base.size());
-      printf("base : %s \n", sop1.c_str());
-      auto sop2 = to_hex(exp.data(), exp.size());
-      printf("exp : %s \n", sop2.c_str());
-      auto sop3 = to_hex(modulus.data(), modulus.size());
-      printf("mod : %s \n", sop3.c_str());
-
-
       try {
-         printf("Calling ... ");
-         auto retCall = fc::snark::modexp(len_base, len_exp, len_modulus, _base, _exp, _mod);
-         printf("Return: %s", retCall.first?"true":"false");
-
-         auto sres = to_hex(retCall.second.data(), retCall.second.size());
-         printf("result : %s \n", sres.c_str());
+         auto retCall = fc::snark::modexp(base.size(), exp.size(), modulus.size(), _base, _exp, _mod);
 
          if (!retCall.first) {
             auto &response = retCall.second;
@@ -267,59 +214,4 @@ namespace eosio { namespace chain { namespace webassembly {
       return error_code::none;
    }
 
-}}} // ns eosio::chain::webassembly
-
-/*
-
-   int32_t interface::recover_key_safe( span<const char> digest,
-                                        span<const char> sig,
-                                        span<char> pub,
-                                        uint32_t* publen) const {
-      using error_code = eosio::chain::webassembly::error_codes::recover_key_safe;
-
-      try {
-         fc::crypto::signature s;
-         try {
-            datastream<const char*> ds( sig.data(), sig.size() );
-            fc::raw::unpack(ds, s);
-         } catch ( fc::exception& ) {
-            return error_code::invalid_signature_format;
-         }
-
-         if( static_cast<unsigned>(s.which()) >= context.db.get<protocol_state_object>().num_supported_key_types ) {
-            return error_code::unactivated_key_type;
-         }
-
-         if(context.control.is_producing_block())
-            EOS_ASSERT(s.variable_size() <= context.control.configured_subjective_signature_length_limit(),
-                       sig_variable_size_limit_exception, "signature variable length component size greater than subjective maximum");
-
-         fc::sha256 _digest;
-         try {
-           _digest = fc::sha256(digest.data(), digest.size());
-         } catch ( fc::exception& ) {
-            return error_code::invalid_message_digest;
-         }
-
-         fc::crypto::public_key recovered;
-         try {
-            recovered = fc::crypto::public_key(s, _digest, false);
-         } catch ( fc::exception& ) {
-            return error_code::invalid_signature_data;
-         }
-
-         auto packed_pubkey = fc::raw::pack(recovered);
-         if( pub.size() < packed_pubkey.size() ) {
-            return error_code::insufficient_output_buffer;
-         }
-         std::memcpy(pub.data(), packed_pubkey.data(), packed_pubkey.size());
-         *publen = packed_pubkey.size();
-      } catch( const eosio::chain::sig_variable_size_limit_exception& ) {
-         throw;
-      } catch ( fc::exception& ) {
-         return error_code::undefined;
-      }
-      return error_code::none;
-   }
-
-*/
+}}}
