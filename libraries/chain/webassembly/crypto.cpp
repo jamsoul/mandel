@@ -103,7 +103,7 @@ namespace eosio { namespace chain { namespace webassembly {
    }
 
    int32_t interface::alt_bn128_add(span<const char> op1, span<const char> op2, span<char> result ) const {
-      using error_code = fc::snark::error_codes::alt_bn128;
+      using error_code = eosio::chain::webassembly::error_codes::evm_precompiles;
 
       fc::snark::bytes _op1(op1.data(), op1.data() + op1.size());
       fc::snark::bytes _op2(op2.data(), op2.data() + op2.size());
@@ -111,15 +111,15 @@ namespace eosio { namespace chain { namespace webassembly {
       try {
          auto retCall = fc::snark::alt_bn128_add(_op1, _op2);
 
-         if (!retCall.first) {
+         if (retCall.first == fc::snark::error_codes::none) {
             auto &response = retCall.second;
             if (result.size()>=response.size()) {
                std::copy(response.begin(), response.end(), result.data());
             } else {
-               // output buffer is smaller than expected
+               return error_code::output_buffer_size_error;
             }
          } else {
-            // something wrong safe -
+            return error_code::operand_decode_error;
          }
 
       } catch ( fc::exception& ) {
@@ -131,7 +131,7 @@ namespace eosio { namespace chain { namespace webassembly {
    }
 
    int32_t interface::alt_bn128_mul(span<const char> g1_point, span<const char> scalar, span<char> result) const {
-      using error_code = fc::snark::error_codes::alt_bn128;
+      using error_code = eosio::chain::webassembly::error_codes::evm_precompiles;
 
       fc::snark::bytes _g1_point(g1_point.data(), g1_point.data() + g1_point.size());
       fc::snark::bytes _scalar(scalar.data(), scalar.data() + scalar.size());
@@ -139,16 +139,16 @@ namespace eosio { namespace chain { namespace webassembly {
       try {
          auto retCall = fc::snark::alt_bn128_mul(_g1_point, _scalar);
 
-         if (!retCall.first) {
+         if (retCall.first == fc::snark::error_codes::none) {
             auto & response = retCall.second;
             
             if (result.size()>=response.size()) {
                std::copy(response.begin(), response.end(), result.data());
             } else {
-               // output buffer is smaller than expected
+               return error_code::output_buffer_size_error;
             }
          } else {
-            // something wrong safe -
+            return error_code::operand_decode_error;
          }
 
       } catch ( fc::exception& ) {
@@ -159,21 +159,21 @@ namespace eosio { namespace chain { namespace webassembly {
    }
 
    int32_t interface::alt_bn128_pair(span<const char> g1_g2_pairs, span<char> result) const {
-      using error_code = fc::snark::error_codes::alt_bn128;
+      using error_code = eosio::chain::webassembly::error_codes::evm_precompiles;
 
       size_t constexpr pairSize = 2 * 32 + 2 * 64;
       size_t const pairs = g1_g2_pairs.size() / pairSize;
       if (pairs * pairSize != g1_g2_pairs.size())
-         return error_code::undefined; // buffer size mismatch pairs length
+         return error_code::pair_list_size_error; // buffer size mismatch pairs length
 
       fc::snark::bytes _g1_g2_pairs(g1_g2_pairs.data(), g1_g2_pairs.data() + g1_g2_pairs.size());
 
       try {
          auto retCall = fc::snark::alt_bn128_pair(_g1_g2_pairs);
-         if (!retCall.first) {
-            result.data()[0] = retCall.second ;
+         if (retCall.first == fc::snark::error_codes::none) {
+            result.data()[0] = retCall.second;
          } else {
-            return error_code::undefined;
+            return error_code::undefined; // no other significant errors than pair size check
          }
 
       } catch ( fc::exception& ) {
@@ -187,7 +187,7 @@ namespace eosio { namespace chain { namespace webassembly {
                               span<const char> exp, 
                               span<const char> modulus, 
                               span<char> out) const {
-      using error_code = fc::snark::error_codes::alt_bn128;
+      using error_code = eosio::chain::webassembly::error_codes::evm_precompiles;
 
       fc::snark::bytes _base(base.data(), base.data() + base.size());
       fc::snark::bytes _exp(exp.data(), exp.data() + exp.size());
@@ -196,15 +196,15 @@ namespace eosio { namespace chain { namespace webassembly {
       try {
          auto retCall = fc::snark::modexp(base.size(), exp.size(), modulus.size(), _base, _exp, _mod);
 
-         if (!retCall.first) {
+         if (retCall.first == fc::snark::error_codes::none) {
             auto &response = retCall.second;
             if (out.size()>=response.size()) {
                std::copy(response.begin(), response.end(), out.data());
             } else {
-               // output buffer is smaller than expected
+               return error_code::output_buffer_size_error;
             }
          } else {
-            // something wrong safe -
+            return error_code::undefined; // no other significant error than modulus len zero
          }
 
       } catch ( fc::exception& ) {
