@@ -35,7 +35,9 @@ add_subdirectory(snapshots)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/snapshots.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/include/snapshots.hpp ESCAPE_QUOTES)
 
 ### BUILD UNIT TEST EXECUTABLE ###
-file(GLOB UNIT_TESTS "*.cpp") # find all unit test suites
+#file(GLOB UNIT_TESTS "*.cpp") # find all unit test suites
+file(GLOB UNIT_TESTS "evm_precompiles.cpp" "main.cpp") # find all unit test suites
+
 add_executable( unit_test ${UNIT_TESTS}) # build unit tests as one executable
 
 target_link_libraries( unit_test eosio_chain_wrap chainbase eosio_testing fc appbase ${PLATFORM_SPECIFIC_LIBS} )
@@ -69,11 +71,11 @@ set(ctest_tests "'${ctest_tests}' -j8") # surround test list string in apostroph
 
 # The following tests are known to take the longest, bump up their cost (priority) so that they'll run first
 # even on fresh first time test runs before ctest auto-detects costs
-foreach(RUNTIME ${EOSIO_WASM_RUNTIMES})
-   set_tests_properties(api_unit_test_${RUNTIME} PROPERTIES COST 5000)
-   set_tests_properties(wasm_unit_test_${RUNTIME} PROPERTIES COST 4000)
-   set_tests_properties(delay_unit_test_${RUNTIME} PROPERTIES COST 3000)
-endforeach()
+#foreach(RUNTIME ${EOSIO_WASM_RUNTIMES})
+#   set_tests_properties(api_unit_test_${RUNTIME} PROPERTIES COST 5000)
+#   set_tests_properties(wasm_unit_test_${RUNTIME} PROPERTIES COST 4000)
+#   set_tests_properties(delay_unit_test_${RUNTIME} PROPERTIES COST 3000)
+#endforeach()
 
 ### COVERAGE TESTING ###
 if(ENABLE_COVERAGE_TESTING)
