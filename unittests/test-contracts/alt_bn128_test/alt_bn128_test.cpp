@@ -12,6 +12,9 @@ void alt_bn128_test::fun1( eosio::name _op1, eosio::name _op2) {
    unsigned char ret[64] = { 0 };
 
 
+   check( _op1 == name("momo"), "op1 did not match" );
+   check( _op2 == name("mumu"), "op2 did not match" );
+
    print_f("OP1:"); eosio::printhex(op1, 64); print_f("\n");
    print_f("OP2:"); eosio::printhex(op2, 64); print_f("\n");
    

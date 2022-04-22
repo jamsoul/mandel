@@ -42,8 +42,8 @@ BOOST_AUTO_TEST_CASE( alt_bn128_add_test ) { try {
    c.produce_block();
 
    c.push_action( tester1_account, "fun1"_n, tester1_account, mutable_variant_object()
-      ("op1", tester1_account.to_string())
-      ("op2", tester1_account.to_string())
+      ("op1", "momo")
+      ("op2", "mumo")
    );
 
 /*
