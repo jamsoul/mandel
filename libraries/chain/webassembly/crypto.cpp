@@ -171,7 +171,7 @@ namespace eosio { namespace chain { namespace webassembly {
       try {
          auto retCall = fc::snark::alt_bn128_pair(_g1_g2_pairs);
          if (retCall.first == fc::snark::error_codes::none) {
-            result.data()[0] = retCall.second;
+            result.data()[0] = retCall.second?1:0;
          } else {
             return error_code::undefined; // no other significant errors than pair size check
          }
