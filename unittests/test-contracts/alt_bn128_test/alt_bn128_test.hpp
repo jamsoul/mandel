@@ -36,16 +36,14 @@ public:
    using eosio::contract::contract;
 
    [[eosio::action]]
-   void fun1( eosio::name op1, eosio::name op2);
-
- /*  [[eosio::action]]
-   void test_alt_bn128_mul( eosio::name op1, eosio::name op2);
+   void testadd( std::string op1, std::string op2, std::string result);
 
    [[eosio::action]]
-   void test_alt_bn128_pair( eosio::name op1);
+   void testmul( std::string op1, std::string op2, std::string result);
 
    [[eosio::action]]
-   void test_mod_exp( eosio::name base, eosio::name exp, eosio::name modulus );
-   */
+   void testpair( std::string op1, bool result);
 
+   [[eosio::action]]
+   void testmodexp( std::string base, std::string exp, std::string modulo, std::string result);
 };
