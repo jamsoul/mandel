@@ -214,4 +214,39 @@ namespace eosio { namespace chain { namespace webassembly {
       return error_code::none;
    }
 
+   int32_t interface::blake2_f( uint32_t rounds, 
+                                span<const char> state, 
+                                span<const char> message, 
+                                span<const char> t0_offset, 
+                                span<const char> t1_offset,
+                                const char final, 
+                                span<char> result) {
+      using error_code = eosio::chain::webassembly::error_codes::evm_precompiles;
+
+      fc::snark::bytes _state(state.data(), state.data() + state.size());
+      fc::snark::bytes _message(message.data(), message.data() + message.size());
+      fc::snark::bytes _t0(t0_offset.data(), t0_offset.data() + t0_offset.size());
+      fc::snark::bytes _t1(t1_offset.data(), t1_offset.data() + t1_offset.size());
+
+      try {
+         auto retCall = fc::snark::blake2f(rounds, _state, _message, _t0, _t1, final);
+
+         if (retCall.first == fc::snark::error_codes::none) {
+            auto &response = retCall.second;
+            if (result.size()>=response.size()) {
+               std::copy(response.begin(), response.end(), result.data());
+            } else {
+               return error_code::output_buffer_size_error;
+            }
+         } else {
+            return error_code::undefined;
+         }
+
+      } catch ( fc::exception& ) {
+         return error_code::undefined;
+      }
+      
+      return error_code::none;
+   }
+
 }}}

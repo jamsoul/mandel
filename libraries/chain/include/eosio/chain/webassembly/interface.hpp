@@ -1734,6 +1734,22 @@ namespace webassembly {
          */
          int32_t mod_exp(span<const char> base, span<const char> exp, span<const char> modulus, span<char> out) const;
 
+         /**
+          * BLAKE2 compression function `F`
+          * https://eips.ethereum.org/EIPS/eip-152
+          * Precompiled contract which implements the compression function F used in the BLAKE2 cryptographic hashing algorithm.
+          * 
+          * @ingroup crypto
+          * @param rounds        - the number of rounds - 32-bit unsigned big-endian word
+          * @param state         - a span containing the state vector - 8 unsigned 64-bit little-endian words
+          * @param message       - a span containing the message block vector - 16 unsigned 64-bit little-endian words
+          * @param t0_offset     - offset counters - unsigned 64-bit little-endian word
+          * @param t1_offset     - offset counters - unsigned 64-bit little-endian word
+          * @param final         - the final block indicator flag - 8-bit word
+          * @param[out] result   - the result
+         */
+         int32_t blake2_f( uint32_t rounds, span<const char> state, span<const char> message, span<const char> t0_offset, span<const char> t1_offset, const char final, span<char> result);
+
          // compiler builtins api
          void __ashlti3(legacy_ptr<int128_t>, uint64_t, uint64_t, uint32_t) const;
          void __ashrti3(legacy_ptr<int128_t>, uint64_t, uint64_t, uint32_t) const;
