@@ -46,6 +46,7 @@ void alt_bn128_test::testblake2f( uint32_t rounds, bytes  state, bytes  message,
                                              final,
                                              (char*)ret.data(), 64);
 
+   printhex(ret.data(), 64);
    check( ret == result, "Result does not match");
 
 }
