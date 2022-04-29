@@ -158,7 +158,7 @@ namespace eosio { namespace chain { namespace webassembly {
       return error_code::none;
    }
 
-   int32_t interface::alt_bn128_pair(span<const char> g1_g2_pairs, span<char> result) const {
+   int32_t interface::alt_bn128_pair(span<const char> g1_g2_pairs, bool* result) const {
       using error_code = eosio::chain::webassembly::error_codes::evm_precompiles;
 
       size_t constexpr pairSize = 2 * 32 + 2 * 64;
@@ -171,7 +171,7 @@ namespace eosio { namespace chain { namespace webassembly {
       try {
          auto retCall = fc::snark::alt_bn128_pair(_g1_g2_pairs);
          if (retCall.first == fc::snark::error_codes::none) {
-            result.data()[0] = retCall.second?1:0;
+            *result = retCall.second;
          } else {
             return error_code::undefined; // no other significant errors than pair size check
          }
@@ -219,7 +219,7 @@ namespace eosio { namespace chain { namespace webassembly {
                                 span<const char> message, 
                                 span<const char> t0_offset, 
                                 span<const char> t1_offset,
-                                const char final, 
+                                bool final, 
                                 span<char> result) {
       using error_code = eosio::chain::webassembly::error_codes::evm_precompiles;
 

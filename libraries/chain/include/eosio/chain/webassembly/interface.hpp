@@ -1718,7 +1718,7 @@ namespace webassembly {
           * @param g1_g2_pairs - a span containing pairs of G1,G2 points. (2 * 32 bytes) + (2 * 64 bytes)
           * @param[out] result - true if pairing evaluates to 1, false otherwise
          */
-         int32_t alt_bn128_pair(span<const char> g1_g2_pairs, span<char> result) const;
+         int32_t alt_bn128_pair(span<const char> g1_g2_pairs, bool* result) const;
 
          /**
           * Big integer modular exponentiation
@@ -1748,7 +1748,7 @@ namespace webassembly {
           * @param final         - the final block indicator flag - 8-bit word
           * @param[out] result   - the result
          */
-         int32_t blake2_f( uint32_t rounds, span<const char> state, span<const char> message, span<const char> t0_offset, span<const char> t1_offset, const char final, span<char> result);
+         int32_t blake2_f( uint32_t rounds, span<const char> state, span<const char> message, span<const char> t0_offset, span<const char> t1_offset, bool final, span<char> result);
 
          // compiler builtins api
          void __ashlti3(legacy_ptr<int128_t>, uint64_t, uint64_t, uint32_t) const;
