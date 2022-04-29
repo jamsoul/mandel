@@ -263,7 +263,8 @@ inline constexpr auto get_intrinsic_table() {
       "env.alt_bn128_add",
       "env.alt_bn128_mul",
       "env.alt_bn128_pair",
-      "env.mod_exp"
+      "env.mod_exp",
+      "env.blake2_f"
    );
 }
 inline constexpr std::size_t find_intrinsic_index(std::string_view hf) {

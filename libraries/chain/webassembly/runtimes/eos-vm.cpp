@@ -626,6 +626,8 @@ REGISTER_CF_HOST_FUNCTION( alt_bn128_add );
 REGISTER_CF_HOST_FUNCTION( alt_bn128_mul );
 REGISTER_CF_HOST_FUNCTION( alt_bn128_pair );
 REGISTER_CF_HOST_FUNCTION( mod_exp );
+REGISTER_CF_HOST_FUNCTION( blake2_f );
+
 
 } // namespace webassembly
 } // namespace chain
