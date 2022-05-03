@@ -229,7 +229,10 @@ namespace eosio { namespace chain { namespace webassembly {
       fc::snark::bytes _t1(t1_offset.data(), t1_offset.data() + t1_offset.size());
 
       try {
-         auto retCall = fc::snark::blake2f(rounds, _state, _message, _t0, _t1, final);
+         auto retCall = fc::snark::blake2f(rounds, _state, _message, _t0, _t1, final, [&](int round)->bool {
+            this->context.trx_context.checktime();
+            return false;
+         });
 
          if (retCall.first == fc::snark::error_codes::none) {
             auto &response = retCall.second;
