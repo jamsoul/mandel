@@ -37,7 +37,7 @@ namespace eosio {
                         const char* t0_offset, uint32_t len_t0_offset, 
                         const char* t1_offset, uint32_t len_t1_offset, 
                         bool final, 
-                        const char* result, uint32_t len_result);
+                        char* result, uint32_t len_result);
       }
    }
 }

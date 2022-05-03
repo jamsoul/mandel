@@ -34,10 +34,10 @@ void alt_bn128_test::testblake2f( uint32_t rounds, bytes  state, bytes  message,
 
    check(state.size() == 64, "arg( h ) size error");
    check(message.size() == 128, "arg( m ) size error");
-   check(t0.size() == 4, "arg( t0 ) size error");
-   check(t1.size() == 4, "arg( t1 ) size error");
+   check(t0.size() == 8, "arg( t0 ) size error");
+   check(t1.size() == 8, "arg( t1 ) size error");
    check(result.size() == 64, "arg( result ) size error");
-
+   
    uint32_t errorCode = eosio::internal_use_do_not_use::blake2_f( rounds, 
                                              state.data(), state.size(),
                                              message.data(), message.size(),
@@ -46,9 +46,7 @@ void alt_bn128_test::testblake2f( uint32_t rounds, bytes  state, bytes  message,
                                              final,
                                              (char*)ret.data(), 64);
 
-   printhex(ret.data(), 64);
    check( ret == result, "Result does not match");
-
 }
 
 

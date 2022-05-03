@@ -220,7 +220,7 @@ namespace eosio { namespace chain { namespace webassembly {
                                 span<const char> t0_offset, 
                                 span<const char> t1_offset,
                                 bool final, 
-                                span<char> result) {
+                                span<char> out) {
       using error_code = eosio::chain::webassembly::error_codes::evm_precompiles;
 
       fc::snark::bytes _state(state.data(), state.data() + state.size());
@@ -233,13 +233,13 @@ namespace eosio { namespace chain { namespace webassembly {
 
          if (retCall.first == fc::snark::error_codes::none) {
             auto &response = retCall.second;
-            if (result.size()>=response.size()) {
-               std::copy(response.begin(), response.end(), result.data());
+            if (out.size()>=response.size()) {
+               std::copy(response.begin(), response.end(), out.data());
             } else {
                return error_code::output_buffer_size_error;
             }
          } else {
-            return error_code::undefined;
+            return error_code::input_len_error; // no other error than input len invalid (yet)
          }
 
       } catch ( fc::exception& ) {

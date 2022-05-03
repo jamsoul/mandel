@@ -12,7 +12,6 @@
 #include <contracts.hpp>
 
 #include "fork_test_utilities.hpp"
-#include <fc/log/logger.hpp>
 
 using namespace eosio::chain;
 using namespace eosio::testing;
@@ -139,34 +138,19 @@ BOOST_AUTO_TEST_CASE( blake2f_test ) { try {
                  "0000000000000000000000000000000000000000000000000000000000000000"
                  "0000000000000000000000000000000000000000000000000000000000000000"
                  "0000000000000000000000000000000000000000000000000000000000000000");
-   std::string t0("03000000");
-   std::string t1("00000000");
+   std::string t0("0300000000000000");
+   std::string t1("0000000000000000");
    std::string result("ba80a53f981c4d0d6a2797b69f12f6e94c212f14685ac4b74b12bb6fdbffa2d1"
                       "7d87c5392aab792dc252d5de4533cc9518d38aa8dbf1925ab92386edd4009923");
 
-   auto b_h = h2bin(h);
-//   std::reverse(b_h.begin(), b_h.end());
-
-   auto b_m = h2bin(m);
-//   std::reverse(b_m.begin(), b_m.end());
-
-   auto b_t0 = h2bin(t0);
-//   std::reverse(b_t0.begin(), b_t0.end());
-
-   auto b_t1 = h2bin(t1);
-//    std::reverse(b_t1.begin(), b_t1.end());
-
-   auto b_result = h2bin(result);
-//   std::reverse(b_result.begin(), b_result.end());
-
    c.push_action( tester1_account, "testblake2f"_n, tester1_account, mutable_variant_object()
       ("rounds", 12)
-      ("state", b_h)
-      ("message", b_m)
-      ("t0", b_t0)
-      ("t1", b_t1)
+      ("state", h2bin(h))
+      ("message", h2bin(m))
+      ("t0", h2bin(t0))
+      ("t1", h2bin(t1))
       ("final", true)
-      ("result", b_result)
+      ("result", h2bin(result))
    );
    } FC_LOG_AND_RETHROW() }
 
