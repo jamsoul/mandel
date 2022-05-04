@@ -142,15 +142,40 @@ BOOST_AUTO_TEST_CASE( blake2f_test ) { try {
    std::string t1("0000000000000000");
    std::string result("ba80a53f981c4d0d6a2797b69f12f6e94c212f14685ac4b74b12bb6fdbffa2d1"
                       "7d87c5392aab792dc252d5de4533cc9518d38aa8dbf1925ab92386edd4009923");
+   uint32_t r{12};
 
    c.push_action( tester1_account, "testblake2f"_n, tester1_account, mutable_variant_object()
-      ("rounds", 12)
+      ("rounds", r)
       ("state", h2bin(h))
       ("message", h2bin(m))
       ("t0", h2bin(t0))
       ("t1", h2bin(t1))
       ("final", true)
       ("result", h2bin(result))
+   );
+   } FC_LOG_AND_RETHROW() }
+
+
+BOOST_AUTO_TEST_CASE( get_block_num_test ) { try {
+   tester c( setup_policy::preactivate_feature_and_new_bios );
+
+   const auto& tester1_account = account_name("tester1");
+   c.create_accounts( {tester1_account} );
+   c.produce_block();
+
+   const auto& pfm = c.control->get_protocol_feature_manager();
+   const auto& d = pfm.get_builtin_digest( builtin_protocol_feature_t::evm_precompiles );
+   BOOST_REQUIRE( d );
+
+   c.preactivate_protocol_features( {*d} );
+   c.produce_block();
+
+   c.set_code( tester1_account, contracts::alt_bn128_test_wasm() );
+   c.set_abi( tester1_account, contracts::alt_bn128_test_abi().data() );
+   c.produce_block();
+
+   c.push_action( tester1_account, "testblock"_n, tester1_account, mutable_variant_object()
+      ("blocknum", 0)
    );
    } FC_LOG_AND_RETHROW() }
 

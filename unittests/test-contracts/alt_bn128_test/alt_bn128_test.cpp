@@ -49,4 +49,10 @@ void alt_bn128_test::testblake2f( uint32_t rounds, bytes  state, bytes  message,
    check( ret == result, "Result does not match");
 }
 
+[[eosio::action]]
+void alt_bn128_test::testblock(uint32_t blocknum) {
+   uint32_t retBlock;
+   uint32_t errorCode = eosio::internal_use_do_not_use::get_block_num(&retBlock);
+   check( retBlock == blocknum , "result does not match");
+}
 

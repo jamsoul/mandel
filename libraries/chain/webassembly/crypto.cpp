@@ -240,7 +240,7 @@ namespace eosio { namespace chain { namespace webassembly {
                std::copy(response.begin(), response.end(), out.data());
             } else {
                return error_code::output_buffer_size_error;
-            }
+            }  
          } else {
             return error_code::input_len_error; // no other error than input len invalid (yet)
          }
@@ -251,5 +251,12 @@ namespace eosio { namespace chain { namespace webassembly {
       
       return error_code::none;
    }
+
+   int32_t interface::get_block_num(uint32_t* block_num) {
+      using error_code = eosio::chain::webassembly::error_codes::evm_precompiles;
+      *block_num = 0;
+      return error_code::none;
+   }
+
 
 }}}

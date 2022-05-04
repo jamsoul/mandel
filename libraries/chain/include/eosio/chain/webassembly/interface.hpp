@@ -1750,6 +1750,15 @@ namespace webassembly {
          */
          int32_t blake2_f( uint32_t rounds, span<const char> state, span<const char> message, span<const char> t0_offset, span<const char> t1_offset, bool final, span<char> result);
 
+         /**
+          * Get Block Number
+          * Precompiled contract which returns the current block number
+          * 
+          * @ingroup crypto
+          * @param[out] result   - the result
+         */
+         int32_t get_block_num( uint32_t* blocknum );
+
          // compiler builtins api
          void __ashlti3(legacy_ptr<int128_t>, uint64_t, uint64_t, uint32_t) const;
          void __ashrti3(legacy_ptr<int128_t>, uint64_t, uint64_t, uint32_t) const;

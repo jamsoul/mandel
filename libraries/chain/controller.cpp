@@ -3543,6 +3543,7 @@ void controller_impl::on_activation<builtin_protocol_feature_t::evm_precompiles>
       add_intrinsic_to_whitelist( ps.whitelisted_intrinsics, "alt_bn128_pair" );
       add_intrinsic_to_whitelist( ps.whitelisted_intrinsics, "mod_exp" );            
       add_intrinsic_to_whitelist( ps.whitelisted_intrinsics, "blake2_f" );
+      add_intrinsic_to_whitelist( ps.whitelisted_intrinsics, "get_block_num" );
    } );
 }
 

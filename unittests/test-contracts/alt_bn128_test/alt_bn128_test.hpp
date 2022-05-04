@@ -38,6 +38,10 @@ namespace eosio {
                         const char* t1_offset, uint32_t len_t1_offset, 
                         bool final, 
                         char* result, uint32_t len_result);
+
+      __attribute__((eosio_wasm_import))
+      int32_t get_block_num( uint32_t* block_num); 
+
       }
    }
 }
@@ -47,18 +51,21 @@ public:
    using eosio::contract::contract;
 
    [[eosio::action]]
-   void testadd( bytes op1, bytes op2, bytes result);
+   void testadd(bytes op1, bytes op2, bytes result);
 
    [[eosio::action]]
-   void testmul( bytes op1, bytes op2, bytes result);
+   void testmul(bytes op1, bytes op2, bytes result);
 
    [[eosio::action]]
-   void testpair( bytes op1, bool result);
+   void testpair(bytes op1, bool result);
 
    [[eosio::action]]
-   void testmodexp( bytes base, bytes exp, bytes modulo, bytes result);
+   void testmodexp(bytes base, bytes exp, bytes modulo, bytes result);
          
    [[eosio::action]]
-   void testblake2f( uint32_t rounds, bytes state, bytes message, bytes t0, bytes t1, bool final, bytes result);
+   void testblake2f(uint32_t rounds, bytes state, bytes message, bytes t0, bytes t1, bool final, bytes result);
+
+   [[eosio::action]]
+   void testblock(uint32_t blocknum);
 
 };
