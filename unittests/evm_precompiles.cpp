@@ -180,4 +180,33 @@ BOOST_AUTO_TEST_CASE( get_block_num_test ) { try {
    } FC_LOG_AND_RETHROW() }
 
 
+BOOST_AUTO_TEST_CASE( test_keccak256 ) { try {
+   tester c( setup_policy::preactivate_feature_and_new_bios );
+
+   const auto& tester1_account = account_name("tester1");
+   c.create_accounts( {tester1_account} );
+   c.produce_block();
+
+   const auto& pfm = c.control->get_protocol_feature_manager();
+   const auto& d = pfm.get_builtin_digest( builtin_protocol_feature_t::evm_precompiles );
+   BOOST_REQUIRE( d );
+
+   c.preactivate_protocol_features( {*d} );
+   c.produce_block();
+
+   c.set_code( tester1_account, contracts::alt_bn128_test_wasm() );
+   c.set_abi( tester1_account, contracts::alt_bn128_test_abi().data() );
+   c.produce_block();
+
+   std::string m("6162630000000000000000000000000000000000000000000000000000000000"
+                 "0000000000000000000000000000000000000000000000000000000000000000"
+                 "0000000000000000000000000000000000000000000000000000000000000000"
+                 "0000000000000000000000000000000000000000000000000000000000000000");
+
+   c.push_action( tester1_account, "testkeccak"_n, tester1_account, mutable_variant_object()
+      ("input", m)
+      ("output", m)
+   );
+   } FC_LOG_AND_RETHROW() }
+
 BOOST_AUTO_TEST_SUITE_END()

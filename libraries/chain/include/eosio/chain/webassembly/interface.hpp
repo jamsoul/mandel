@@ -1759,6 +1759,12 @@ namespace webassembly {
          */
          int32_t get_block_num( uint32_t* blocknum );
 
+         /**
+          * keccak256
+          * 
+          */
+         int32_t keccak256( span<const char> input, span<char> output );
+
          // compiler builtins api
          void __ashlti3(legacy_ptr<int128_t>, uint64_t, uint64_t, uint32_t) const;
          void __ashrti3(legacy_ptr<int128_t>, uint64_t, uint64_t, uint32_t) const;

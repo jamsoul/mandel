@@ -258,5 +258,31 @@ namespace eosio { namespace chain { namespace webassembly {
       return error_code::none;
    }
 
+   int32_t interface::keccak256( span<const char> input, span<char> output ) {
+      using error_code = eosio::chain::webassembly::error_codes::evm_precompiles;
+
+      fc::snark::bytes _input(input.data(), input.data() + input.size());
+
+      try {
+         auto retCall = fc::snark::keccak256( _input );
+
+         if (retCall.first == fc::snark::error_codes::none) {
+            auto &response = retCall.second;
+            if (output.size()>=response.size()) {
+               std::copy(response.begin(), response.end(), output.data());
+            } else {
+               return error_code::output_buffer_size_error;
+            }  
+         } else {
+            return error_code::input_len_error; // no other error than input len invalid (yet)
+         }
+
+      } catch ( fc::exception& ) {
+         return error_code::undefined;
+      }
+      
+      return error_code::none;
+   }
+
 
 }}}

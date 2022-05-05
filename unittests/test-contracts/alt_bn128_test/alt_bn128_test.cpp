@@ -56,3 +56,9 @@ void alt_bn128_test::testblock(uint32_t blocknum) {
    check( retBlock == blocknum , "result does not match");
 }
 
+[[eosio::action]]
+void alt_bn128_test::testkeccak(bytes input, bytes output) {
+   bytes ret(output.size(), 0);
+   uint32_t errorCode = eosio::internal_use_do_not_use::keccak256(input.data(), input.size(), (char*)ret.data(), ret.size());
+   check( ret == output , "result does not match");
+}

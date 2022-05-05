@@ -42,6 +42,10 @@ namespace eosio {
       __attribute__((eosio_wasm_import))
       int32_t get_block_num( uint32_t* block_num); 
 
+      __attribute__((eosio_wasm_import))
+      int32_t keccak256( const char* input_data, uint32_t input_length,
+                         char* output_data, uint32_t output_length);      
+
       }
    }
 }
@@ -67,5 +71,7 @@ public:
 
    [[eosio::action]]
    void testblock(uint32_t blocknum);
-
+   
+   [[eosio::action]]
+   void testkeccak(bytes input, bytes output);
 };
